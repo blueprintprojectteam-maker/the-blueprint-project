@@ -16,3 +16,9 @@ export default function RootLayout({
     </html>
   );
 }
+export const metadata = {
+  title: "The Blueprint Project",
+  icons: {
+    icon: "/logo.png",
+  },
+};
