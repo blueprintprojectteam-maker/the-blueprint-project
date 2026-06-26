@@ -27,7 +27,6 @@ function AnimatedCounter({ target, duration = 1200, suffix = "", triggerKey }: C
         const [entry] = entries;
         
         if (entry.isIntersecting) {
-          // If it comes into view and hasn't animated yet, run the count-up loop
           if (!hasAnimated.current) {
             hasAnimated.current = true;
             let startTimestamp: number | null = null;
@@ -47,8 +46,6 @@ function AnimatedCounter({ target, duration = 1200, suffix = "", triggerKey }: C
             window.requestAnimationFrame(step);
           }
         } else {
-          // CRITICAL: When the card leaves the viewport, unlock the animation!
-          // This allows it to count up again next time the user scrolls back to it.
           hasAnimated.current = false;
           setCount(0);
         }
@@ -182,10 +179,10 @@ export default function HomePage() {
       {/* 1. CINEMATIC FULL-SCREEN LANDING SECTION */}
       <section className="relative overflow-hidden min-h-screen w-full flex flex-col justify-center items-center px-6 text-center bg-gradient-to-b from-[#FCFBF7] to-[#F4F1EA] py-20">
         
-        {/* FIXED PARALLAX LAYER */}
+        {/* PARALLAX LAYER BACKGROUND GRID */}
         <div 
           style={{ transform: `translateY(${scrollY * 0.3}px)` }}
-          className="absolute inset-0 bg-[linear-gradient(to_right,#EAE7DF_1px,transparent_1px),linear-gradient(to_bottom,#EAE7DF_1px,transparent_1px)] bg-[size:4rem_4rem] opacity-40 pointer-events-none transform-gpu"
+          className="absolute inset-0 bg-[linear-gradient(to_right,#EAE7DF_1px,transparent_1px),linear-gradient(to_bottom,#EAE7DF_1px,transparent_1px)] bg-[size:4rem_4rem] opacity-40 pointer-events-none transform-gpu will-change-transform"
         ></div>
 
         <div className="max-w-6xl mx-auto relative z-10 w-full flex flex-col items-center justify-center">
@@ -222,79 +219,104 @@ export default function HomePage() {
       </section>
 
 
-      {/* 2. WHY WE EXIST VALUE BLOCKS */}
-      <section id="why" className="py-28 px-6 border-t-4 border-b-4 border-dashed border-[#EAE7DF] bg-[#F4F1EA]">
-        <div className="max-w-6xl mx-auto">
-          <div className="text-center mb-16">
-            <span className="text-sm font-black uppercase tracking-widest text-[#4F46E5] font-mono">The Big Picture</span>
-            <h2 className="text-4xl font-black text-[#1E1B18] mt-2">Why We Exist</h2>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            <div className="bg-white border-4 border-[#1E1B18] p-8 rounded-3xl shadow-[8px_8px_0px_0px_#1E1B18] hover:translate-x-[3px] hover:translate-y-[3px] hover:shadow-[5px_5px_0px_0px_#1E1B18] active:translate-x-[6px] active:translate-y-[6px] active:shadow-none transition-all duration-100">
-              <div className="w-12 h-12 rounded-2xl bg-[#4F46E5]/10 flex items-center justify-center text-xl font-bold text-[#4F46E5] mb-6 border-2 border-[#4F46E5]/20 font-mono">01</div>
-              <h3 className="text-2xl font-black text-[#1E1B18] mb-3">Everyone Has a Place to Start</h3>
-              <p className="text-[#5C554E] leading-relaxed">Most students care about their communities, but many don't know how to get involved. Whether you have a project idea or simply want to contribute to a cause you care about, The Blueprint Project provides a place to begin.</p>
+      {/* COMBINED INTERACTIVE ZONE: SIDE-BY-SIDE SPLIT-SCREEN DASHBOARD LAYOUT */}
+      <section id="why" className="py-28 px-6 md:px-12 border-t-4 border-b-4 border-dashed border-[#EAE7DF] bg-[#F4F1EA]">
+        <div className="max-w-7xl mx-auto">
+          
+          <div className="grid grid-cols-1 lg:grid-cols-5 gap-12 lg:gap-16 items-start">
+            
+            {/* --- LEFT SIDE (COLUMN 1 & 2): THE PARALLAX-ENGAGED STATEMENT BLOCK --- */}
+            <div className="lg:col-span-2 relative lg:sticky lg:top-28 transition-transform duration-200">
+              <span className="text-xs font-black uppercase tracking-[0.2em] text-[#4F46E5] font-mono bg-[#4F46E5]/10 px-2.5 py-1 rounded border border-[#4F46E5]/20 inline-block mb-4">
+                WHY WE EXIST
+              </span>
+              
+              {/* Dynamic click card with reactive tactile feedback mechanics built-in */}
+              <div className="border-4 border-[#1E1B18] bg-white p-8 rounded-3xl shadow-[8px_8px_0px_0px_#1E1B18] hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-[5px_5px_0px_0px_#1E1B18] active:translate-x-[6px] active:translate-y-[6px] active:shadow-none transition-all duration-150 relative overflow-hidden group/card">
+                
+                {/* ADVANCED: Isolated internal sub-grid that drifts slower on screen scrolls */}
+                <div 
+                  style={{ transform: `translateY(${scrollY * 0.08}px)` }}
+                  className="absolute inset-0 bg-[linear-gradient(to_right,#EAE7DF_1px,transparent_1px),linear-gradient(to_bottom,#EAE7DF_1px,transparent_1px)] bg-[size:1.5rem_1rem] opacity-30 pointer-events-none transform-gpu will-change-transform"
+                ></div>
+                
+                <div className="relative z-10">
+                  <div className="flex items-center space-x-3 mb-4">
+                    <div className="w-10 h-10 rounded-xl bg-[#FFE066] text-[#1E1B18] border-2 border-[#1E1B18] flex items-center justify-center font-mono font-black text-sm shadow-[2px_2px_0px_0px_#1E1B18] group-hover/card:rotate-6 transition-transform duration-200">
+                      0
+                    </div>
+                    <h3 className="text-xl font-mono font-black uppercase tracking-tight text-[#1E1B18]">
+                      OUR PURPOSE
+                    </h3>
+                  </div>
+                  
+                  <p className="text-[#5C554E] text-sm md:text-base leading-relaxed font-medium">
+                    Unlike other student organizations that focus on one specific niche issue, The Blueprint Project was built differently. Instead of asking students to fit into one cause, we bring together students with different passions under one mission: Empowering students to identify problems, create solutions, and make a real difference in their communities while collaborating with others who share a passion for positive change.
+                  </p>
+                </div>
+              </div>
             </div>
 
-            <div className="bg-white border-4 border-[#1E1B18] p-8 rounded-3xl shadow-[8px_8px_0px_0px_#1E1B18] hover:translate-x-[3px] hover:translate-y-[3px] hover:shadow-[5px_5px_0px_0px_#1E1B18] active:translate-x-[6px] active:translate-y-[6px] active:shadow-none transition-all duration-100 md:-translate-y-2 md:hover:translate-y-[1px] md:hover:shadow-[5px_7px_0px_0px_#1E1B18]">
-              <div className="w-12 h-12 rounded-2xl bg-[#FFE066]/20 flex items-center justify-center text-xl font-bold text-[#1E1B18] mb-6 border-2 border-[#FFE066]/40 font-mono">02</div>
-              <h3 className="text-2xl font-black text-[#1E1B18] mb-3">More Than One Cause</h3>
-              <p className="text-[#5C554E] leading-relaxed">Unlike other student organizations that focus on one specific niche issue, The Blueprint Project was built differently. Instead of asking students to fit into one cause, we bring together students with different passions under one mission: Empowering students to identify problems, create solutions, and make a real difference in their communities while collaborating with others who share a passion for positive change.</p>
+            {/* --- RIGHT SIDE (COLUMN 3, 4 & 5): INTERACTIVE HOVER-REACTIVE TIMELINE --- */}
+            <div id="process" className="lg:col-span-3 w-full">
+              <div className="mb-10 lg:mb-12">
+                <span className="text-xs font-black uppercase tracking-[0.2em] text-[#06D6A0] font-mono bg-[#06D6A0]/10 px-2.5 py-1 rounded border border-[#06D6A0]/20 inline-block mb-3">
+                  OUR INITIATIVES
+                </span>
+                <h2 className="text-3xl font-black text-[#1E1B18] uppercase tracking-tight">
+                  What We Do <span className="font-serif italic lowercase text-[#4F46E5] font-normal tracking-normal">(and why you should join us ;))</span>
+                </h2>
+              </div>
+
+              {/* Central axis vector timeline grid rail */}
+              <div className="relative border-l-4 border-dashed border-[#1E1B18] pl-8 space-y-12">
+                
+                {/* Step 1 */}
+                <div className="relative group/step cursor-default">
+                  {/* Pop effect on node marker */}
+                  <div className="absolute -left-[46px] top-0 w-8 h-8 rounded-full bg-[#FFE066] border-2 border-[#1E1B18] flex items-center justify-center font-mono font-black text-xs shadow-[2px_2px_0px_0px_#1E1B18] group-hover/step:scale-110 group-hover/step:translate-x-[1px] group-hover/step:translate-y-[1px] group-hover/step:shadow-none transition-all duration-200">1</div>
+                  
+                  {/* Linear tracking title highlighter toggle */}
+                  <h4 className="text-xl font-black text-[#1E1B18] mb-1.5 relative inline-block">
+                    Find Your Place
+                    <span className="absolute bottom-0 left-0 w-full h-[3px] bg-[#FFE066] origin-left scale-x-0 group-hover/step:scale-x-100 transition-transform duration-300 ease-out"></span>
+                  </h4>
+                  <p className="text-[#5C554E] text-sm md:text-base leading-relaxed transition-colors group-hover/step:text-[#1E1B18]">Not every student wants to start a project. Some want to lead, some want to contribute, and some simply want to learn. The Blueprint Project gives every student a place to get involved, regardless of experience, background, or resources.</p>
+                </div>
+
+                {/* Step 2 */}
+                <div className="relative group/step cursor-default">
+                  <div className="absolute -left-[46px] top-0 w-8 h-8 rounded-full bg-[#A78BFA] border-2 border-[#1E1B18] flex items-center justify-center font-mono font-black text-xs text-white shadow-[2px_2px_0px_0px_#1E1B18] group-hover/step:scale-110 group-hover/step:translate-x-[1px] group-hover/step:translate-y-[1px] group-hover/step:shadow-none transition-all duration-200">2</div>
+                  <h4 className="text-xl font-black text-[#1E1B18] mb-1.5 relative inline-block">
+                    Build Something Bigger
+                    <span className="absolute bottom-0 left-0 w-full h-[3px] bg-[#A78BFA] origin-left scale-x-0 group-hover/step:scale-x-100 transition-transform duration-300 ease-out"></span>
+                  </h4>
+                  <p className="text-[#5C554E] text-sm md:text-base leading-relaxed transition-colors group-hover/step:text-[#1E1B18]">Join a community of students who care about making a difference. Whether you're tackling a challenge in your school, your city, or your state, you'll work alongside others who share a commitment to turning ideas into action.</p>
+                </div>
+
+                {/* Step 3 */}
+                <div className="relative group/step cursor-default">
+                  <div className="absolute -left-[46px] top-0 w-8 h-8 rounded-full bg-[#F43F5E] border-2 border-[#1E1B18] flex items-center justify-center font-mono font-black text-xs text-white shadow-[2px_2px_0px_0px_#1E1B18] group-hover/step:scale-110 group-hover/step:translate-x-[1px] group-hover/step:translate-y-[1px] group-hover/step:shadow-none transition-all duration-200">3</div>
+                  <h4 className="text-xl font-black text-[#1E1B18] mb-1.5 relative inline-block">
+                    Grow With Us
+                    <span className="absolute bottom-0 left-0 w-full h-[3px] bg-[#F43F5E] origin-left scale-x-0 group-hover/step:scale-x-100 transition-transform duration-300 ease-out"></span>
+                  </h4>
+                  <p className="text-[#5C554E] text-sm md:text-base leading-relaxed transition-colors group-hover/step:text-[#1E1B18]">The Blueprint Project is on the path of becoming one of the biggest student-led organizations by the end of 2026. By joining now, you'll help shape the future of an organization designed to empower students for years to come.</p>
+                </div>
+
+              </div>
             </div>
 
-            <div className="bg-white border-4 border-[#1E1B18] p-8 rounded-3xl shadow-[8px_8px_0px_0px_#1E1B18] hover:translate-x-[3px] hover:translate-y-[3px] hover:shadow-[5px_5px_0px_0px_#1E1B18] active:translate-x-[6px] active:translate-y-[6px] active:shadow-none transition-all duration-100">
-              <div className="w-12 h-12 rounded-2xl bg-[#06D6A0]/10 flex items-center justify-center text-xl font-bold text-[#06D6A0] mb-6 border-2 border-[#06D6A0]/20 font-mono">03</div>
-              <h3 className="text-2xl font-black text-[#1E1B18] mb-3">A Network Without Boundaries</h3>
-              <p className="text-[#5C554E] leading-relaxed">You don't need funding, connections, or a large team to get started. Through local chapters and joining our growing national network, we collaborate, share resources, and support one another in creating impact wherever we are.</p>
-            </div>
-          </div>
-        </div>
-      </section>
-
-
-      {/* 3. THE LAB PROCESS METHODOLOGY */}
-      <section id="process" className="py-28 px-6 max-w-5xl mx-auto">
-        <div className="text-center mb-16">
-          <span className="text-sm font-black uppercase tracking-widest text-[#06D6A0] font-mono bg-[#06D6A0]/10 px-3 py-1 rounded-md">Our Initiatives</span>
-          <h2 className="text-4xl font-black text-[#1E1B18] mt-4">What We Do (and why you should join us ;))</h2>
-        </div>
-
-        <div className="relative border-l-4 border-dashed border-[#1E1B18] pl-8 ml-4 space-y-12">
-          <div className="relative group cursor-default">
-            <div className="absolute -left-[46px] top-0 w-8 h-8 rounded-full bg-[#FFE066] border-2 border-[#1E1B18] flex items-center justify-center font-mono font-black text-xs shadow-[2px_2px_0px_0px_#1E1B18] group-hover:translate-x-[1px] group-hover:translate-y-[1px] group-hover:shadow-none transition-all">1</div>
-            <h4 className="text-xl font-black text-[#1E1B18] mb-2 relative inline-block">
-              Find Your Place
-              <span className="absolute bottom-0 left-0 w-full h-[3px] bg-[#FFE066] origin-left scale-x-0 group-hover:scale-x-100 transition-transform duration-200"></span>
-            </h4>
-            <p className="text-[#5C554E] max-w-xl">Not every student wants to start a project. Some want to lead, some want to contribute, and some simply want to learn. The Blueprint Project gives every student a place to get involved, regardless of experience, background, or resources.</p>
           </div>
 
-          <div className="relative group cursor-default">
-            <div className="absolute -left-[46px] top-0 w-8 h-8 rounded-full bg-[#A78BFA] border-2 border-[#1E1B18] flex items-center justify-center font-mono font-black text-xs text-white shadow-[2px_2px_0px_0px_#1E1B18] group-hover:translate-x-[1px] group-hover:translate-y-[1px] group-hover:shadow-none transition-all">2</div>
-            <h4 className="text-xl font-black text-[#1E1B18] mb-2 relative inline-block">
-              Build Something Bigger
-              <span className="absolute bottom-0 left-0 w-full h-[3px] bg-[#A78BFA] origin-left scale-x-0 group-hover:scale-x-100 transition-transform duration-200"></span>
-            </h4>
-            <p className="text-[#5C554E] max-w-xl">Join a community of students who care about making a difference. Whether you're tackling a challenge in your school, your city, or your state, you'll work alongside others who share a commitment to turning ideas into action.</p>
-          </div>
-
-          <div className="relative group cursor-default">
-            <div className="absolute -left-[46px] top-0 w-8 h-8 rounded-full bg-[#F43F5E] border-2 border-[#1E1B18] flex items-center justify-center font-mono font-black text-xs text-white shadow-[2px_2px_0px_0px_#1E1B18] group-hover:translate-x-[1px] group-hover:translate-y-[1px] group-hover:shadow-none transition-all">3</div>
-            <h4 className="text-xl font-black text-[#1E1B18] mb-2 relative inline-block">
-              Grow With Us
-              <span className="absolute bottom-0 left-0 w-full h-[3px] bg-[#F43F5E] origin-left scale-x-0 group-hover:scale-x-100 transition-transform duration-200"></span>
-            </h4>
-            <p className="text-[#5C554E] max-w-xl">The Blueprint Project is on the path of becoming one of the biggest student-led organizations by the end of 2026. By joining now, you'll help shape the future of an organization designed to empower students for years to come.</p>
-          </div>
         </div>
       </section>
 
 
       {/* 4. HIGH-CONTRAST IMPACT METRICS */}
-    <section id="impact" className="relative overflow-hidden py-24 px-6 bg-[#1E1B18] text-[#FCFBF7] border-t-4 border-b-4 border-[#1E1B18]">
+      <section id="impact" className="py-24 px-6 bg-[#1E1B18] text-[#FCFBF7] border-t-4 border-b-4 border-[#1E1B18]">
         <div className="max-w-6xl mx-auto">
-          <div className="absolute inset-0 bg-[linear-gradient(to_right,#ffffff_1px,transparent_1px),linear-gradient(to_bottom,#ffffff_1px,transparent_1px)] bg-[size:4rem_4rem] opacity-5 pointer-events-none"></div>
+          
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-12 items-center">
             <div className="lg:col-span-1 text-center lg:text-left">
               <span className="font-mono text-xs font-black tracking-[0.3em] text-[#06D6A0] uppercase bg-[#06D6A0]/10 px-3 py-1 rounded-sm border border-[#06D6A0]/20">
